@@ -2,9 +2,9 @@
   <div>
     <h2 class="text-2xl font-bold mb-6 text-ktex">User Management</h2>
 
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 gap-4">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-4 w-full">
       <button
-        class="px-4 py-2 bg-ktex text-white rounded hover:bg-ktexDark"
+        class="w-full md:w-auto px-4 py-2 bg-ktex text-white rounded hover:bg-ktexDark"
         @click="openCreateForm"
       >
         + Create New User
@@ -14,117 +14,119 @@
         v-model="searchQuery"
         type="search"
         placeholder="Search users..."
-        class="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-ktex"
+        class="w-full md:max-w-sm px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:border-ktex"
       />
     </div>
 
 
-    <div class="overflow-x-auto rounded-lg border border-gray-300">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-100">
-          <tr>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Name
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Email
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              Role
-            </th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Actions
-            </th>
+    <div class="w-full overflow-x-auto">
+      <table
+        class="w-full border-collapse border-spacing-0 divide-y divide-gray-200 sm:table block"
+      >
+        <thead class="hidden sm:table-header-group bg-ktex/10">
+          <tr class="bg-gradient-to-r from-ktex/10 to-ktex/5">
+            <th class="px-6 py-3 text-left text-xs font-medium text-ktex uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-ktex uppercase tracking-wider">Email</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-ktex uppercase tracking-wider">Role</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-ktex uppercase tracking-wider">Actions</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+
+        <tbody class="bg-white divide-y divide-gray-200 sm:table-row-group block">
           <tr
             v-for="user in paginatedUsers"
             :key="user.id"
-            class="hover:bg-gray-50"
+            class="hover:bg-gray-50 sm:table-row flex flex-col sm:flex-row sm:items-center sm:justify-between border-b sm:border-0"
           >
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ user.name }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ user.email }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-              {{ user.role }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-2">
-              <button
-                class="text-indigo-600 hover:text-indigo-900"
-                @click="openEditForm(user)"
-              >
-                Edit
-              </button>
-              <button
-                class="text-red-600 hover:text-red-900"
-                @click="deleteUser(user.id)"
-              >
-                Delete
-              </button>
-            </td>
+            <td class="px-6 py-4 text-sm text-gray-900 sm:whitespace-nowrap">{{ user.name }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900 break-words">{{ user.email }}</td>
+            <td class="px-6 py-4 text-sm text-gray-900">{{ user.role }}</td>
+            <td class="px-6 py-4 text-sm font-medium flex flex-col sm:flex-row gap-2 justify-center">
+            <!-- Edit button -->
+            <button 
+              class="flex items-center gap-1 text-indigo-600 hover:text-indigo-900"
+              @click="openEditForm(user)"
+            >
+              <!-- Heroicon Pencil -->
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                  class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M11 5h2m-6 4h8m-8 4h8m-6 4h4m1.293-13.293a1 1 0 011.414 0l2.586 2.586a1 1 0 010 1.414l-9.293 9.293a1 1 0 01-.39.242l-4 1a1 1 0 01-1.263-1.263l1-4a1 1 0 01.242-.39l9.293-9.293z" />
+              </svg>
+              Edit
+            </button>
+
+            <!-- Delete button -->
+            <button 
+              class="flex items-center gap-1 text-red-600 hover:text-red-900"
+              @click="deleteUser(user.id)"
+            >
+              <!-- Heroicon Trash -->
+              <svg xmlns="http://www.w3.org/2000/svg" 
+                  class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3H4m16 0h-4" />
+              </svg>
+              Delete
+            </button>
+          </td>
+
           </tr>
-          <tr v-if="filteredUsers.length === 0">
-            <td colspan="4" class="text-center px-6 py-4 text-gray-500">
-              No users found.
-            </td>
+          <tr v-if="filteredUsers.length === 0" class="sm:table-row block">
+            <td colspan="4" class="text-center px-6 py-4 text-gray-500">No users found.</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Pagination controls -->
-    <div class="mt-4 flex justify-between items-center">
-      <div>
-        Showing
-        <span class="font-semibold">{{ startUser + 1 }}</span>
-        to
-        <span class="font-semibold">{{ endUser }}</span>
-        of
-        <span class="font-semibold">{{ filteredUsers.length }}</span> users
+    <div class="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 text-center sm:text-left">
+      
+      <!-- Info text -->
+      <div class="text-sm order-2 sm:order-1">
+        Showing <span class="font-semibold">{{ startUser + 1 }}</span>
+        to <span class="font-semibold">{{ endUser }}</span>
+        of <span class="font-semibold">{{ filteredUsers.length }}</span> users
       </div>
 
-      <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-        <button
-          @click="changePage(currentPage - 1)"
-          :disabled="currentPage === 1"
-          class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-          aria-label="Previous"
-        >
-          ‹
-        </button>
-        <button
-          v-for="page in totalPages"
-          :key="page"
-          @click="changePage(page)"
-          :class="[
-            'relative inline-flex items-center px-4 py-2 border text-sm font-medium',
-            currentPage === page
-              ? 'z-10 bg-ktex text-white border-ktex'
-              : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50',
-          ]"
-        >
-          {{ page }}
-        </button>
-        <button
-          @click="changePage(currentPage + 1)"
-          :disabled="currentPage === totalPages"
-          class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
-          aria-label="Next"
-        >
-          ›
-        </button>
+      <!-- Pagination -->
+      <nav class="order-1 sm:order-2 flex justify-center sm:justify-end">
+        <ul class="inline-flex items-center -space-x-px">
+          <!-- Prev -->
+          <li>
+            <button
+              @click="changePage(currentPage - 1)"
+              :disabled="currentPage === 1"
+              class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+            >‹</button>
+          </li>
+
+          <!-- Pages -->
+          <li v-for="page in totalPages" :key="page">
+            <button
+              @click="changePage(page)"
+              :class="[
+                'px-3 py-2 border text-sm font-medium',
+                currentPage === page
+                  ? 'bg-ktex text-white border-ktex'
+                  : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+              ]"
+            >{{ page }}</button>
+          </li>
+
+          <!-- Next -->
+          <li>
+            <button
+              @click="changePage(currentPage + 1)"
+              :disabled="currentPage === totalPages"
+              class="px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+            >›</button>
+          </li>
+        </ul>
       </nav>
+
     </div>
+
 
     <!-- Modal Form -->
     <div
@@ -295,5 +297,29 @@ export default {
 </script>
 
 <style scoped>
-/* Add any custom styles if needed */
+  @media (max-width: 576px) {
+        .modal-dialog {
+            margin: 10px;
+            max-width: 100%;
+        }
+        .modal-content {
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+        }
+        .form-control {
+            font-size: 16px; /* Bigger tap targets */
+            padding: 10px;
+        }
+        .modal-header {
+            padding: 15px;
+        }
+        .modal-footer {
+            padding: 10px 15px;
+        }
+        .btn {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%; /* Full width buttons for mobile */
+        }
+    }
 </style>

@@ -8,6 +8,7 @@ import AuthLayout from '../layouts/AuthLayout.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import Home from '@/pages/Home.vue'
 import Users from '@/pages/Users.vue'
+import UserRoles from '@/pages/UserRoles.vue'
 
 const routes = [
   {
@@ -38,6 +39,12 @@ const routes = [
         name: 'Users',
         component: Users,
         meta: { title: 'User Management - KTexPro' }
+      },
+      {
+        path: '/roles',
+        name: 'Roles',
+        component: UserRoles,
+        meta: { title: 'User Roles & Permission - KTexPro' }
       }
       // Add more dashboard pages here...
     ]
