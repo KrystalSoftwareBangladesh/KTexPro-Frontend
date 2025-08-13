@@ -9,6 +9,7 @@ import LoginPage from '@/pages/LoginPage.vue'
 import Home from '@/pages/Home.vue'
 import Users from '@/pages/Users.vue'
 import UserRoles from '@/pages/UserRoles.vue'
+import LeadManagement from '@/pages/LeadManagement.vue'
 
 const routes = [
   {
@@ -45,6 +46,12 @@ const routes = [
         name: 'Roles',
         component: UserRoles,
         meta: { title: 'User Roles & Permission - KTexPro' }
+      },
+      {
+        path: '/leads',
+        name: 'LeadManagement',
+        component: LeadManagement,
+        meta: { title: 'Lead Management - KTexPro' }
       }
       // Add more dashboard pages here...
     ]

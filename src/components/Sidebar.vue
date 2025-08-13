@@ -82,6 +82,19 @@
             </router-link>
           </div>
         </div>
+        <!-- Lead Management with submenu -->
+        <div>
+          <router-link
+            to="/leads"
+            class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2"
+            active-class="bg-ktexDark font-semibold"
+            @click="$emit('closeSidebar')"
+          >
+            <BriefcaseIcon class="w-6 h-6" />
+            <span v-if="!collapsed">Lead Management</span>
+          </router-link>
+        </div>
+
 
         <!-- Add more links here -->
       </nav>
@@ -101,7 +114,13 @@
 </template>
 
 <script>
-import { HomeIcon, UserIcon, ArrowRightOnRectangleIcon, LockClosedIcon, } from '@heroicons/vue/24/outline'
+import { 
+  HomeIcon, 
+  UserIcon, 
+  ArrowRightOnRectangleIcon, 
+  LockClosedIcon,
+  BriefcaseIcon,
+} from '@heroicons/vue/24/outline'
 
 export default {
   name: 'Sidebar',
@@ -120,6 +139,7 @@ export default {
     UserIcon,
     ArrowRightOnRectangleIcon,
     LockClosedIcon,
+    BriefcaseIcon,
   },
   data() {
     return {
