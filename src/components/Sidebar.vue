@@ -9,7 +9,7 @@
 
     <aside
       :class="[
-        'bg-ktex text-white flex flex-col transition-all duration-300 ease-in-out fixed md:static top-0 left-0 h-full z-30',
+        'bg-ktex text-white flex flex-col transition-all duration-300 ease-in-out fixed md:static top-0 left-0 h-screen z-30',
         collapsed ? 'w-20' : 'w-64',
         showSidebar ? 'translate-x-0' : '-translate-x-full',
         'md:translate-x-0'
@@ -21,10 +21,10 @@
         <span v-else class="text-xl">KP</span>
       </div>
 
-      <nav class="flex-1 p-4 space-y-2">
+      <nav class="flex-1 p-4 space-y-2 overflow-y-auto no-scrollbar">
         <router-link
           to="/"
-          class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition"
+          class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition text-sm"
           active-class="bg-ktexDark font-semibold"
           @click="$emit('closeSidebar')"
         >
@@ -36,7 +36,7 @@
         <div>
           <button
             @click="toggleUserMenu"
-            class="w-full flex items-center justify-between px-4 py-2 rounded hover:bg-ktexDark transition text-left"
+            class="w-full flex items-center justify-between px-4 py-2 rounded hover:bg-ktexDark transition text-left text-sm"
           >
             <div class="flex items-center space-x-2">
               <UserIcon class="w-6 h-6" />
@@ -46,7 +46,7 @@
             <svg
               v-if="!collapsed"
               :class="{'transform rotate-90': userMenuOpen}"
-              class="w-4 h-4 transition-transform duration-200"
+              class="w-4 h-4 transition-transform duration-200 text-sm"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -63,7 +63,7 @@
           >
             <router-link
               to="/users"
-              class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2"
+              class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2 text-xs"
               active-class="bg-ktexDark font-semibold"
               @click="$emit('closeSidebar')"
             >
@@ -73,7 +73,7 @@
 
             <router-link
               to="/roles"
-              class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2"
+              class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2 text-xs"
               active-class="bg-ktexDark font-semibold"
               @click="$emit('closeSidebar')"
             >
@@ -86,7 +86,7 @@
         <div>
           <router-link
             to="/leads"
-            class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2"
+            class="flex items-center space-x-2 px-4 py-2 rounded hover:bg-ktexDark transition mt-2 text-sm"
             active-class="bg-ktexDark font-semibold"
             @click="$emit('closeSidebar')"
           >
@@ -102,7 +102,7 @@
       <div class="p-4 border-t border-ktexDark">
         <button
           @click="logout"
-          class="w-full bg-mint hover:bg-mint-dark rounded py-2 font-semibold flex items-center justify-center space-x-2 transition-colors duration-300"
+          class="w-full bg-mint hover:bg-mint-dark rounded py-2 font-semibold flex items-center justify-center space-x-2 transition-colors duration-300 text-sm"
         >
           <span v-if="!collapsed">Logout</span>
           <ArrowRightOnRectangleIcon class="w-6 h-6" v-else />
@@ -165,5 +165,13 @@ export default {
 .bg-mint-dark:hover {
   background-color: #7DD3B2;
   color: #0F4B3E;
+}
+/* in your main.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>
