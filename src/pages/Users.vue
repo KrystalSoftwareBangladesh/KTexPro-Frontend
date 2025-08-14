@@ -216,6 +216,11 @@ export default {
         { id: 9, name: 'Isabel Diaz', email: 'isabel@example.com', role: 'Merchandiser' },
         { id: 10, name: 'Jackie Fox', email: 'jackie@example.com', role: 'Admin' },
         { id: 11, name: 'Karen Wright', email: 'karen@example.com', role: 'Marketing' },
+        { id: 7, name: 'Grace Hall', email: 'grace@example.com', role: 'Marketing' },
+        { id: 8, name: 'Henry Long', email: 'henry@example.com', role: 'Sales' },
+        { id: 9, name: 'Isabel Diaz', email: 'isabel@example.com', role: 'Merchandiser' },
+        { id: 10, name: 'Jackie Fox', email: 'jackie@example.com', role: 'Admin' },
+        { id: 11, name: 'Karen Wright', email: 'karen@example.com', role: 'Marketing' },
       ],
       showForm: false,
       editingUser: null,
@@ -226,7 +231,7 @@ export default {
       },
       searchQuery: '',
       currentPage: 1,
-      usersPerPage: 5,
+      usersPerPage: 10,
     }
   },
   computed: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen bg-gray-100">
+  <div class="flex min-h-screen bg-gray-100 font-sans">
     <Sidebar
       :collapsed="isCollapsed"
       :showSidebar="showSidebar"
@@ -24,6 +24,10 @@
       <main class="flex-1 overflow-auto p-6">
         <router-view />
       </main>
+      <!-- Footer -->
+      <footer class="bg-white shadow p-4 text-sm text-gray-600 text-center">
+        © {{ new Date().getFullYear() }} Krystal Software. All rights reserved.
+      </footer>
     </div>
   </div>
 </template>
