@@ -1,17 +1,27 @@
 <template>
   <div class="p-4 bg-white shadow rounded">
     <div class="flex justify-between items-center mb-4">
-      <h2 class="text-lg font-semibold">All Leads</h2>
-      <button @click="openModal('create')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ New Lead</button>
+      <h2 class="text-lg font-semibold">{{ title }}</h2>
+      <button
+        @click="openModal('create')"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+      >
+        + New Lead
+      </button>
     </div>
 
     <!-- Search & Filter -->
     <div class="flex gap-4 mb-4 flex-wrap">
-      <input v-model="searchQuery" type="text" placeholder="Search..." class="border p-2 rounded flex-1" />
-      <select v-model="filterStatus" class="border p-2 rounded">
+      <input
+        v-model="searchQuery"
+        type="text"
+        placeholder="Search by name or company..."
+        class="border p-2 rounded flex-1"
+      />
+      <select v-if="showStatusFilter" v-model="localFilterStatus" class="border p-2 rounded">
         <option value="">All Status</option>
         <option v-for="status in statuses" :key="status" :value="status">{{ status }}</option>
-      </select>
+        </select>
     </div>
 
     <!-- Leads Table -->
@@ -79,71 +89,88 @@
 
 <script>
 export default {
-  name: 'AllLeads',
+  name: 'LeadTable',
   props: {
-  leads: { type: Array, default: () => [] },
-  currentUser: { type: String, default: '' },
-  filterStatus: { type: String, default: '' }
-},
-data() {
-  return {
-    localLeads: [...this.leads], // copy of leads
-    localCurrentUser: this.currentUser,
-    localFilterStatus: this.filterStatus,
-    searchQuery: '',
-    currentPage: 1,
-    perPage: 5,
-    showModal: false,
-    modalType: 'create',
-    form: { id: null, name: '', company: '', contact: '', status: 'New', owner: '' },
-    statuses: ['New', 'In Progress', 'Follow-up', 'Converted', 'Lost']
-  };
-},
-computed: {
-  filteredLeads() {
-    return this.localLeads.filter(lead => {
-      const matchesSearch = this.searchQuery
-        ? lead.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          lead.company.toLowerCase().includes(this.searchQuery.toLowerCase())
-        : true;
-
-      const matchesStatus = this.localFilterStatus ? lead.status === this.localFilterStatus : true;
-      const matchesUser = this.localCurrentUser ? lead.owner === this.localCurrentUser : true;
-
-      return matchesSearch && matchesStatus && matchesUser;
-    });
+    leads: { type: Array, default: () => [] },
+    currentUser: { type: String, default: '' },
+    filterStatus: { type: String, default: '' },
+    title: { type: String, default: 'Leads' },
+    showStatusFilter: { type: Boolean, default: true }
   },
-  totalPages() {
-    return Math.ceil(this.filteredLeads.length / this.perPage);
+  data() {
+    return {
+      searchQuery: '',
+      localFilterStatus: this.filterStatus, // local copy
+      currentPage: 1,
+      perPage: 5,
+      showModal: false,
+      modalType: 'create',
+      form: { id: null, name: '', company: '', contact: '', status: 'New', owner: '' },
+      statuses: ['New', 'In Progress', 'Follow-up', 'Converted', 'Lost']
+    };
   },
-  paginatedLeads() {
-    const start = (this.currentPage - 1) * this.perPage;
-    return this.filteredLeads.slice(start, start + this.perPage);
-  }
-},
-methods: {
-  // When saving/updating, update localLeads and emit event
-  saveLead() {
-    const updatedLeads = [...this.localLeads];
-    if (this.modalType === 'create') {
-      const newLead = { ...this.form, id: Date.now(), created_at: new Date().toISOString().split('T')[0] };
-      updatedLeads.push(newLead);
-    } else {
-      const index = updatedLeads.findIndex(l => l.id === this.form.id);
-      if (index !== -1) updatedLeads.splice(index, 1, { ...this.form });
+  watch: {
+    filterStatus(newVal) {
+      this.localFilterStatus = newVal;
     }
-    this.localLeads = updatedLeads;
-    this.$emit('update-leads', updatedLeads);
-    this.closeModal();
   },
-  deleteLead(id) {
-    if (confirm('Are you sure?')) {
-      this.localLeads = this.localLeads.filter(l => l.id !== id);
-      this.$emit('update-leads', this.localLeads);
+  computed: {
+    filteredLeads() {
+      if (!this.leads || this.leads.length === 0) return [];
+
+      return this.leads.filter(lead => {
+        const matchesSearch = this.searchQuery
+          ? lead.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+            lead.company.toLowerCase().includes(this.searchQuery.toLowerCase())
+          : true;
+
+        // Only filter by currentUser if it is set (for "My Leads")
+        const matchesUser = this.currentUser ? lead.owner === this.currentUser : true;
+
+        // Only filter by status if localFilterStatus is set (for Converted/Lost)
+        const matchesStatus = this.localFilterStatus ? lead.status === this.localFilterStatus : true;
+
+        return matchesSearch && matchesUser && matchesStatus;
+      });
+    },
+    totalPages() {
+      return Math.max(Math.ceil(this.filteredLeads.length / this.perPage), 1);
+    },
+    paginatedLeads() {
+      const start = (this.currentPage - 1) * this.perPage;
+      return this.filteredLeads.slice(start, start + this.perPage);
     }
+  },
+  methods: {
+    openModal(type, lead = null) {
+      this.modalType = type;
+      this.form = lead
+        ? { ...lead }
+        : { id: null, name: '', company: '', contact: '', status: 'New', owner: this.currentUser || '' };
+      this.showModal = true;
+    },
+    closeModal() { this.showModal = false; },
+    saveLead() {
+      const updatedLeads = [...this.leads];
+      if (this.modalType === 'create') {
+        const newLead = { ...this.form, id: Date.now(), created_at: new Date().toISOString().split('T')[0] };
+        updatedLeads.push(newLead);
+      } else {
+        const index = updatedLeads.findIndex(l => l.id === this.form.id);
+        if (index !== -1) updatedLeads.splice(index, 1, { ...this.form });
+      }
+      this.$emit('update-leads', updatedLeads);
+      this.closeModal();
+    },
+    deleteLead(id) {
+      if (confirm('Are you sure?')) {
+        const updatedLeads = this.leads.filter(l => l.id !== id);
+        this.$emit('update-leads', updatedLeads);
+      }
+    },
+    prevPage() { if (this.currentPage > 1) this.currentPage--; },
+    nextPage() { if (this.currentPage < this.totalPages) this.currentPage++; }
   }
-}
-
-
 };
 </script>
+

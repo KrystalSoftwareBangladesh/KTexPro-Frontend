@@ -8,57 +8,68 @@
         v-for="tab in tabs"
         :key="tab.key"
         @click="activeTab = tab.key"
-        :class="[
-          'px-4 py-2 font-medium',
-          activeTab === tab.key
-            ? 'border-b-2 border-ktexDark text-ktexDark'
-            : 'text-gray-500 hover:text-gray-700'
-        ]"
+        :class="[activeTab === tab.key ? 'border-b-2 border-ktexDark text-ktexDark' : 'text-gray-500 hover:text-gray-700', 'px-4 py-2 font-medium']"
       >
         {{ tab.label }}
       </button>
     </div>
 
     <!-- Tab Content -->
-    <div>
-      <div v-if="activeTab === 'all'">
-        <AllLeads />
-      </div>
-      <div v-else-if="activeTab === 'my'">
-        <MyLeads />
-      </div>
-      <div v-else-if="activeTab === 'converted'">
-        <ConvertedLeads />
-      </div>
-      <div v-else-if="activeTab === 'lost'">
-        <LostLeads />
-      </div>
-    </div>
+    <LeadTable
+      v-if="activeTab === 'all'"
+      :leads="leads"
+      title="All Leads"
+      @update-leads="leads = $event"
+    />
+
+    <LeadTable
+      v-else-if="activeTab === 'my'"
+      :leads="leads"
+      :current-user="currentUser"
+      title="My Leads"
+      @update-leads="leads = $event"
+    />
+
+    <LeadTable
+      v-else-if="activeTab === 'converted'"
+      :leads="leads"
+      filter-status="Converted"
+      :show-status-filter="false"
+      title="Converted Leads"
+      @update-leads="leads = $event"
+    />
+
+    <LeadTable
+      v-else-if="activeTab === 'lost'"
+      :leads="leads"
+      filter-status="Lost"
+      :show-status-filter="false"
+      title="Lost Leads"
+      @update-leads="leads = $event"
+    />
   </div>
 </template>
 
 <script>
-import AllLeads from '@/components/leads/AllLeads.vue'
-import MyLeads from '@/components/leads/MyLeads.vue'
-import ConvertedLeads from '@/components/leads/ConvertedLeads.vue'
-import LostLeads from '@/components/leads/LostLeads.vue'
+import LeadTable from '@/components/leads/LeadTable.vue'
 
 export default {
   name: 'LeadManagement',
-  components: {
-    AllLeads,
-    MyLeads,
-    ConvertedLeads,
-    LostLeads
-  },
+  components: { LeadTable },
   data() {
     return {
       activeTab: 'all',
+      currentUser: 'Admin', // example logged-in user
       tabs: [
         { key: 'all', label: 'All Leads' },
         { key: 'my', label: 'My Leads' },
         { key: 'converted', label: 'Converted' },
         { key: 'lost', label: 'Lost' }
+      ],
+      leads: [
+        { id: 1, name: 'John Doe', company: 'ABC Ltd', contact: '123456789', status: 'New', owner: 'Admin', created_at: '2025-08-15' },
+        { id: 2, name: 'Jane Smith', company: 'XYZ Inc', contact: '987654321', status: 'In Progress', owner: 'User1', created_at: '2025-08-14' },
+        { id: 3, name: 'Bob Lee', company: 'Tech Corp', contact: '555555555', status: 'Converted', owner: 'Admin', created_at: '2025-08-10' }
       ]
     }
   }
