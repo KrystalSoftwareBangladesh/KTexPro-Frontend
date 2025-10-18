@@ -18,6 +18,7 @@ import {
 import { labels } from '../data/data'
 import { taskSchema } from '../data/schema'
 import { useTasks } from './tasks-provider'
+import { useNavigate } from '@tanstack/react-router'
 
 type DataTableRowActionsProps<TData> = {
   row: Row<TData>
@@ -27,6 +28,7 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const task = taskSchema.parse(row.original)
+  const navigate = useNavigate()
 
   const { setOpen, setCurrentRow } = useTasks()
 
@@ -42,6 +44,9 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
+        <DropdownMenuItem onClick={() => navigate({ to: `/details` })}>
+          Details
+        </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => {
             setCurrentRow(task)
