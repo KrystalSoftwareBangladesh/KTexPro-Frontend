@@ -5,10 +5,10 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Calendar, Edit, Mail, MoreVertical, Phone, Plus, Trash2 } from "lucide-react"
+import { Calendar, Edit, Mail, MapPin, MoreVertical, Phone, Plus, Trash2 } from "lucide-react"
 import { useState } from "react"
 import LeadActivityTimeline from "./lead-activity-timeline"
-import LeadContactInfo from "./lead-contact-info"
+// import LeadContactInfo from "./lead-contact-info"
 import LeadDealPipeline from "./lead-deal-pipeline"
 
 export default function LeadsDetailsPage() {
@@ -103,22 +103,62 @@ export default function LeadsDetailsPage() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 sm:grid-cols-2">
+              <CardContent className="flex justify-between">
+                <div className="flex justify-between w-full">
                   <div className="flex items-center gap-2">
                     <Badge variant="outline">{lead.status}</Badge>
                     <span className="text-sm text-muted-foreground">Status</span>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 ml-5 mr-15">
                     <Badge variant="secondary">{lead.source}</Badge>
                     <span className="text-sm text-muted-foreground">Source</span>
+                  </div>
+                </div>
+                <div>
+                  <Button
+                    variant="outline"
+                    className="ml-auto  bg-transparent"
+                  >
+                    <span className="text-lg">⋯</span>
+                    <span className="ml-2">Edit</span>
+                  </Button>
+                </div>
+              </CardContent>
+              {/* Contact Information Section */}
+              <CardContent className="pt-6 pb-6 border-t mx-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {/* Email */}
+                  <div className="flex items-start gap-3 min-w-0">
+                    <Mail className="h-5 w-5 text-slate-600 mt-5 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm text-slate-600 mb-1">Email</p>
+                      <p className="text-slate-600 font-medium break-words">{lead.email}</p>
+                    </div>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="flex items-start gap-3 min-w-0 md:border-l md:pl-5">
+                    <Phone className="h-5 w-5 text-slate-600 mt-5 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm text-slate-600 mb-1">Phone</p>
+                      <p className="text-slate-600 font-medium break-words">{lead.phone}</p>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-start gap-3 min-w-0 lg:border-l lg:pl-5">
+                    <MapPin className="h-5 w-5 text-slate-600 mt-5 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-sm text-slate-600 mb-1">Location</p>
+                      <p className="text-slate-600 font-medium break-words">{lead.location}</p>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Contact Information */}
-            <LeadContactInfo lead={lead} />
+            {/* <LeadContactInfo lead={lead} /> */}
 
             {/* Activity Timeline */}
             <Card>
