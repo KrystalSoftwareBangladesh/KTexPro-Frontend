@@ -54,7 +54,7 @@ export function BuyersAddDialog({ open }: BuyersAddDialogProps) {
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4 py-4'>
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <div className='space-y-2'>
                 <Label htmlFor='name'>Contact Name *</Label>
                 <Input
@@ -75,7 +75,7 @@ export function BuyersAddDialog({ open }: BuyersAddDialogProps) {
               </div>
             </div>
 
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <div className='space-y-2'>
                 <Label htmlFor='email'>Email *</Label>
                 <Input
@@ -97,7 +97,7 @@ export function BuyersAddDialog({ open }: BuyersAddDialogProps) {
               </div>
             </div>
 
-            <div className='grid grid-cols-3 gap-4'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
               <div className='space-y-2'>
                 <Label htmlFor='country'>Country *</Label>
                 <Input
@@ -139,7 +139,7 @@ export function BuyersAddDialog({ open }: BuyersAddDialogProps) {
               </div>
             </div>
 
-            <div className='grid grid-cols-2 gap-4'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <div className='space-y-2'>
                 <Label htmlFor='website'>Website</Label>
                 <Input

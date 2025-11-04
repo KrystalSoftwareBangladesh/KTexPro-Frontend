@@ -6,7 +6,6 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -149,7 +148,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
             </CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
-            <div className='grid gap-4 md:grid-cols-2'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='supplierName'
@@ -190,7 +189,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
               />
             </div>
 
-            <div className='grid gap-4 md:grid-cols-2'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='email'
@@ -224,7 +223,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
               />
             </div>
 
-            <div className='grid gap-4 md:grid-cols-2'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='website'
@@ -295,7 +294,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
             <CardDescription>Primary contact person details</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
-            <div className='grid gap-4 md:grid-cols-2'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='contactPerson.fullName'
@@ -325,7 +324,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
               />
             </div>
 
-            <div className='grid gap-4 md:grid-cols-2'>
+            <div className='grid gap-4 sm:grid-cols-1 md:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='contactPerson.email'
@@ -401,7 +400,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
                                   }}
                                 />
                               </FormControl>
-                              <div className='space-y-1 leading-none'>
+                              <div className='flex-1 space-y-1 leading-none'>
                                 <FormLabel className='font-normal cursor-pointer'>
                                   {capability.label}
                                 </FormLabel>
@@ -559,7 +558,7 @@ export function SupplierForm({ supplier, onSubmit, onCancel }: SupplierFormProps
             <CardDescription>Production capacity and operational details</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
-            <div className='grid gap-4 md:grid-cols-3'>
+            <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
               <FormField
                 control={form.control}
                 name='yearEstablished'
