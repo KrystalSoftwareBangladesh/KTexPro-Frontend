@@ -17,6 +17,7 @@ import {
   Palette,
   // ServerOff,
   Settings,
+  ShoppingBag,
   // ShieldCheck,
   UserCog,
   // UserX,
@@ -77,6 +78,11 @@ export const sidebarData: SidebarData = {
           title: 'Users',
           url: '/users',
           icon: Users,
+        },
+        {
+          title: 'Buyers',
+          url: '/buyers',
+          icon: ShoppingBag,
         },
         // {
         //   title: 'Secured by Clerk',
