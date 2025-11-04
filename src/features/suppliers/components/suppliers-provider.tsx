@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState } from 'react'
 import useDialogState from '@/hooks/use-dialog-state'
 import { type Supplier } from '../data/schema'
