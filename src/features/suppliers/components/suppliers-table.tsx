@@ -1,4 +1,16 @@
-import { useEffect, useState } from 'react'
+import {
+  DataTablePagination,
+  DataTableToolbar,
+} from '@/components/data-table'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { useTableUrlState } from '@/hooks/use-table-url-state'
 import { type NavigateOptions } from '@tanstack/react-router'
 import {
   type SortingState,
@@ -10,24 +22,12 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from '@tanstack/react-table'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import {
-  DataTablePagination,
-  DataTableToolbar,
-} from '@/components/data-table'
+import { useEffect, useState } from 'react'
+import { companyTypes, supplierStatuses } from '../data/data'
 import { type Supplier } from '../data/schema'
-import { supplierStatuses, companyTypes } from '../data/data'
 import { suppliersColumns } from './suppliers-columns'
-import { useTableUrlState } from '@/hooks/use-table-url-state'
 
 interface DataTableProps {
   data: Supplier[]
