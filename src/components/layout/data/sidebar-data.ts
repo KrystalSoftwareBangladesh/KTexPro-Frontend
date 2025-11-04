@@ -6,6 +6,7 @@ import {
   // Construction,
   // FileX,
   // Command,
+  Factory,
   GalleryVerticalEnd,
   // HelpCircle,
   LayoutDashboard,
@@ -83,6 +84,11 @@ export const sidebarData: SidebarData = {
           title: 'Buyers',
           url: '/buyers',
           icon: ShoppingBag,
+        },
+        {
+          title: 'Suppliers',
+          url: '/suppliers',
+          icon: Factory,
         },
         // {
         //   title: 'Secured by Clerk',
