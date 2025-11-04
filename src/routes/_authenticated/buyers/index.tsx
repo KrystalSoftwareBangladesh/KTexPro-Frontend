@@ -1,7 +1,7 @@
-import { z } from 'zod'
-import { createFileRoute } from '@tanstack/react-router'
 import { Buyers } from '@/features/buyers'
-import { buyerCategories, buyerStatuses } from '@/features/buyers/data/data'
+import { buyerCategories } from '@/features/buyers/data/data'
+import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'zod'
 
 const buyersSearchSchema = z.object({
   page: z.number().optional().catch(1),

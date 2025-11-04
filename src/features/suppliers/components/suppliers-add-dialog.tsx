@@ -11,7 +11,7 @@ type SuppliersAddDialogProps = {
 export function SuppliersAddDialog({ open }: SuppliersAddDialogProps) {
   const { setOpen, currentRow } = useSuppliers()
 
-  const handleSubmit = (data: SupplierFormData) => {
+  const handleSubmit = (_data: SupplierFormData) => {
     toast.success(
       currentRow ? 'Supplier updated successfully' : 'Supplier added successfully'
     )

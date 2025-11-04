@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { type NavigateOptions } from '@tanstack/react-router'
 import {
-  type ColumnFiltersState,
   type SortingState,
   type VisibilityState,
   flexRender,
