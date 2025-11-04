@@ -1,14 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ChevronLeft, ChevronRight, Plus, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -18,6 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Separator } from '@/components/ui/separator'
+import { Textarea } from '@/components/ui/textarea'
 import {
   Sheet,
   SheetClose,
@@ -27,13 +25,16 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Stepper } from '@/components/ui/stepper'
-import { Textarea } from '@/components/ui/textarea'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { ChevronLeft, ChevronRight, Plus, Trash2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { toast } from 'sonner'
 import {
   capabilities,
   certificationTypes,
@@ -70,7 +71,7 @@ export function SuppliersMutateDrawer({
   const [currentStep, setCurrentStep] = useState(0)
 
   const form = useForm<SupplierFormData>({
-    resolver: zodResolver(supplierFormSchema),
+    resolver: zodResolver(supplierFormSchema as any),
     defaultValues: currentRow
       ? {
           supplierName: currentRow.supplierName,

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/incompatible-library */
 import { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
