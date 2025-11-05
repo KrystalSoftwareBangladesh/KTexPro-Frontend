@@ -1,15 +1,15 @@
-import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { RoleService } from '@/services/role.service'
+import { UserService } from '@/services/user.service'
+import type { User } from '@/types/auth'
 import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { useState } from 'react'
 import { ContentSection } from '../components/content-section'
-import { UserService } from '@/services/user.service'
-import { RoleService } from '@/services/role.service'
-import { UsersTable } from './users-table'
-import { CreateUserDialog } from './create-user-dialog'
 import { AssignRoleDialog } from './assign-role-dialog'
+import { CreateUserDrawer } from './create-user-dialog'
 import { UserViewDialog } from './user-view-dialog'
-import type { User } from '@/types/auth'
+import { UsersTable } from './users-table'
 
 export function SettingsUsers() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
@@ -58,7 +58,7 @@ export function SettingsUsers() {
         </div>
       </ContentSection>
 
-      <CreateUserDialog
+      <CreateUserDrawer
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}
         onSuccess={() => refetch()}
