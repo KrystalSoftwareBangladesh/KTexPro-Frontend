@@ -8,6 +8,10 @@ import type {
   Permission,
   AssignRoleRequest,
   AssignRoleResponse,
+  UpdateProfileRequest,
+  UpdateProfileResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
 } from '@/types/auth'
 
 export class UserService {
@@ -51,6 +55,26 @@ export class UserService {
   ): Promise<AssignRoleResponse> {
     const response = await api.patch<AssignRoleResponse>(
       `/user/v1/${userId}/assign-role`,
+      data
+    )
+    return response.data
+  }
+
+  static async updateProfile(
+    data: UpdateProfileRequest
+  ): Promise<UpdateProfileResponse> {
+    const response = await api.patch<UpdateProfileResponse>(
+      '/user/v1/profile',
+      data
+    )
+    return response.data
+  }
+
+  static async changePassword(
+    data: ChangePasswordRequest
+  ): Promise<ChangePasswordResponse> {
+    const response = await api.patch<ChangePasswordResponse>(
+      '/user/v1/change-password',
       data
     )
     return response.data

@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { AxiosError } from 'axios'
+import { useQuery } from '@tanstack/react-query'
 import {
   Dialog,
   DialogContent,
@@ -23,7 +24,16 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { UserService } from '@/services/user.service'
+import { RoleService } from '@/services/role.service'
 
 const createUserSchema = z
   .object({
@@ -34,11 +44,14 @@ const createUserSchema = z
     username: z.string().min(3, 'Username must be at least 3 characters'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
     confirm_password: z.string().min(6, 'Please confirm your password'),
+    groups: z.array(z.number()).min(1, 'Please select at least one role'),
   })
   .refine((data) => data.password === data.confirm_password, {
     message: "Passwords don't match",
     path: ['confirm_password'],
   })
+
+type CreateUserFormData = z.infer<typeof createUserSchema>
 
 interface CreateUserDialogProps {
   open: boolean
@@ -53,7 +66,12 @@ export function CreateUserDialog({
 }: CreateUserDialogProps) {
   const [isLoading, setIsLoading] = useState(false)
 
-  const form = useForm<z.infer<typeof createUserSchema>>({
+  const { data: roles = [] } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => RoleService.getRoles(),
+  })
+
+  const form = useForm<CreateUserFormData>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       first_name: '',
@@ -63,10 +81,11 @@ export function CreateUserDialog({
       username: '',
       password: '',
       confirm_password: '',
+      groups: [],
     },
   })
 
-  async function onSubmit(data: z.infer<typeof createUserSchema>) {
+  async function onSubmit(data: CreateUserFormData) {
     setIsLoading(true)
 
     try {
@@ -78,9 +97,10 @@ export function CreateUserDialog({
         username: data.username,
         password: data.password,
         confirm_password: data.confirm_password,
+        groups: data.groups,
       })
 
-      toast.success('User created successfully')
+      toast.success('User created successfully with assigned role')
       form.reset()
       onOpenChange(false)
       onSuccess()
@@ -216,6 +236,57 @@ export function CreateUserDialog({
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name='groups'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Roles *</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      const roleId = parseInt(value)
+                      const current = field.value || []
+                      if (current.includes(roleId)) {
+                        field.onChange(current.filter((id) => id !== roleId))
+                      } else {
+                        field.onChange([...current, roleId])
+                      }
+                    }}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Select roles'>
+                          {field.value && field.value.length > 0
+                            ? `${field.value.length} role(s) selected`
+                            : 'Select roles'}
+                        </SelectValue>
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {roles.map((role) => (
+                        <SelectItem key={role.id} value={role.id.toString()}>
+                          {role.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {field.value && field.value.length > 0 && (
+                    <div className='flex flex-wrap gap-1 mt-2'>
+                      {field.value.map((roleId) => {
+                        const role = roles.find((r) => r.id === roleId)
+                        return (
+                          <Badge key={roleId} variant='secondary'>
+                            {role?.name || `Role ${roleId}`}
+                          </Badge>
+                        )
+                      })}
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <DialogFooter>
               <Button

@@ -1,12 +1,12 @@
-import { Outlet } from '@tanstack/react-router'
-import { Monitor, Bell, Palette, Wrench, UserCog, Users, ListTodo } from 'lucide-react'
-import { Separator } from '@/components/ui/separator'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { Separator } from '@/components/ui/separator'
+import { Outlet } from '@tanstack/react-router'
+import { Bell, Monitor, Palette, UserCog, Users, Wrench } from 'lucide-react'
 import { SidebarNav } from './components/sidebar-nav'
 
 const sidebarNavItems = [
@@ -41,9 +41,9 @@ const sidebarNavItems = [
     icon: <Users size={18} />,
   },
     {
-    title: 'Tasks',
+    title: 'Roles',
     href: '/settings/roles',
-    icon: <ListTodo size={18} />,
+    icon: <UserCog size={18} />,
   },
 ]
 

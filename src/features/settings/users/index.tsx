@@ -4,15 +4,26 @@ import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ContentSection } from '../components/content-section'
 import { UserService } from '@/services/user.service'
-import { UserList } from './user-list'
+import { RoleService } from '@/services/role.service'
+import { UsersTable } from './users-table'
 import { CreateUserDialog } from './create-user-dialog'
+import { AssignRoleDialog } from './assign-role-dialog'
+import { UserViewDialog } from './user-view-dialog'
+import type { User } from '@/types/auth'
 
 export function SettingsUsers() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
+  const [assigningUser, setAssigningUser] = useState<User | null>(null)
+  const [viewingUser, setViewingUser] = useState<User | null>(null)
 
   const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ['users'],
     queryFn: () => UserService.getUserList(),
+  })
+
+  const { data: roles = [] } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => RoleService.getRoles(),
   })
   
   return (
@@ -21,7 +32,7 @@ export function SettingsUsers() {
         title='User Management'
         desc='Create and manage users in the system.'
       >
-        <div className='space-y-4'>
+        <div className='flex flex-col gap-4'>
           <div className='flex items-center justify-between'>
             <p className='text-sm text-muted-foreground'>
               {users.length} user(s) in the system
@@ -32,7 +43,18 @@ export function SettingsUsers() {
             </Button>
           </div>
 
-          <UserList users={users} isLoading={isLoading} onUpdate={refetch} />
+          {isLoading ? (
+            <div className='text-center py-8 text-muted-foreground'>
+              Loading users...
+            </div>
+          ) : (
+            <UsersTable
+              data={users}
+              roles={roles}
+              onViewUser={setViewingUser}
+              onAssignRole={setAssigningUser}
+            />
+          )}
         </div>
       </ContentSection>
 
@@ -41,6 +63,26 @@ export function SettingsUsers() {
         onOpenChange={setIsCreateDialogOpen}
         onSuccess={() => refetch()}
       />
+
+      {assigningUser && (
+        <AssignRoleDialog
+          user={assigningUser}
+          open={!!assigningUser}
+          onOpenChange={(open) => !open && setAssigningUser(null)}
+          onSuccess={() => {
+            setAssigningUser(null)
+            refetch()
+          }}
+        />
+      )}
+
+      {viewingUser && (
+        <UserViewDialog
+          user={viewingUser}
+          open={!!viewingUser}
+          onOpenChange={(open) => !open && setViewingUser(null)}
+        />
+      )}
     </>
   )
 }
