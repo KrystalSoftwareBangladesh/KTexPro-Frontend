@@ -17,6 +17,8 @@ import { ThemeProvider } from './context/theme-provider'
 import { routeTree } from './routeTree.gen'
 // Styles
 import './styles/index.css'
+// Initialize axios interceptors
+import '@/config/axios-interceptors'
 
 const queryClient = new QueryClient({
   defaultOptions: {
