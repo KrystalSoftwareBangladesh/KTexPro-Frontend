@@ -25,14 +25,18 @@ import {
   Users,
   Wrench,
 } from 'lucide-react'
+import { useAuthStore } from '@/stores/auth-store'
 import { type SidebarData } from '../types'
 
-export const sidebarData: SidebarData = {
-  user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
+export const getSidebarData = (): SidebarData => {
+  const userData = useAuthStore.getState().auth.user
+
+  return {
+    user: {
+      name: userData?.username || 'Guest',
+      email: userData?.email || 'guest@example.com',
+      avatar: '/avatars/shadcn.jpg',
+    },
   teams: [
     // {
     //   name: 'CRM',
@@ -224,4 +228,5 @@ export const sidebarData: SidebarData = {
       ],
     },
   ],
+  }
 }
