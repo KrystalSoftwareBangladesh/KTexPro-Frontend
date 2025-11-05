@@ -86,7 +86,18 @@ export class AuthService {
     return !!this.getAccessToken()
   }
 
-  static logout(): void {
+  static async logout(): Promise<void> {
+    const refreshToken = this.getRefreshToken()
+    
+    if (refreshToken) {
+      try {
+        await api.post('/user/v1/logout', { refresh: refreshToken })
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Logout API error:', error)
+      }
+    }
+    
     this.clearTokens()
   }
 }
