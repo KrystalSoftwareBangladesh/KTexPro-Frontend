@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Table,
   TableBody,
@@ -7,15 +8,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { UserCog } from 'lucide-react'
 import type { User } from '@/types/auth'
+import { AssignRoleDialog } from './assign-role-dialog'
 
 interface UserListProps {
   users: User[]
   isLoading: boolean
+  onUpdate: () => void
 }
 
-export function UserList({ users, isLoading }: UserListProps) {
+export function UserList({ users, isLoading, onUpdate }: UserListProps) {
+  const [assigningUser, setAssigningUser] = useState<User | null>(null)
   if (isLoading) {
     return (
       <div className='space-y-2'>
@@ -35,43 +41,66 @@ export function UserList({ users, isLoading }: UserListProps) {
   }
 
   return (
-    <div className='rounded-md border'>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Username</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Roles</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell className='font-medium'>{user.username}</TableCell>
-              <TableCell>
-                {[user.first_name, user.middle_name, user.last_name]
-                  .filter(Boolean)
-                  .join(' ')}
-              </TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>
-                {user.roles && user.roles.length > 0 ? (
-                  <div className='flex gap-1'>
-                    {user.roles.map((role) => (
-                      <Badge key={role} variant='secondary'>
-                        {role}
-                      </Badge>
-                    ))}
-                  </div>
-                ) : (
-                  <span className='text-muted-foreground text-sm'>No roles</span>
-                )}
-              </TableCell>
+    <>
+      <div className='rounded-md border'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Username</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Groups</TableHead>
+              <TableHead className='text-right'>Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell className='font-medium'>{user.username}</TableCell>
+                <TableCell>{user.full_name || '-'}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>
+                  {user.groups && user.groups.length > 0 ? (
+                    <div className='flex gap-1'>
+                      {user.groups.map((groupId) => (
+                        <Badge key={groupId} variant='secondary'>
+                          Group {groupId}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className='text-muted-foreground text-sm'>
+                      No groups assigned
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell className='text-right'>
+                  <Button
+                    variant='outline'
+                    size='sm'
+                    onClick={() => setAssigningUser(user)}
+                  >
+                    <UserCog className='h-4 w-4' />
+                    Assign Roles
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {assigningUser && (
+        <AssignRoleDialog
+          user={assigningUser}
+          open={!!assigningUser}
+          onOpenChange={(open) => !open && setAssigningUser(null)}
+          onSuccess={() => {
+            setAssigningUser(null)
+            onUpdate()
+          }}
+        />
+      )}
+    </>
   )
 }

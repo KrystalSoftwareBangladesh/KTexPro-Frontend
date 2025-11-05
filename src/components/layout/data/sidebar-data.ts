@@ -204,6 +204,16 @@ export const sidebarData: SidebarData = {
               url: '/settings/display',
               icon: Monitor,
             },
+            {
+              title: 'User Management',
+              url: '/settings/users',
+              icon: Users,
+            },
+            {
+              title: 'Roles',
+              url: '/settings/roles',
+              icon: UserCog,
+            },
           ],
         },
         // {

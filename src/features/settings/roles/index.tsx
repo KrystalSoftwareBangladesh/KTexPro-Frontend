@@ -3,40 +3,44 @@ import { useQuery } from '@tanstack/react-query'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ContentSection } from '../components/content-section'
-import { UserService } from '@/services/user.service'
-import { UserList } from './user-list'
-import { CreateUserDialog } from './create-user-dialog'
+import { RoleService } from '@/services/role.service'
+import { RoleList } from './role-list'
+import { CreateRoleDialog } from './create-role-dialog'
 
-export function SettingsUsers() {
+export function SettingsRoles() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
 
-  const { data: users = [], isLoading, refetch } = useQuery({
-    queryKey: ['users'],
-    queryFn: () => UserService.getUserList(),
+  const {
+    data: roles = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ['roles'],
+    queryFn: () => RoleService.getRoles(),
   })
-  
+
   return (
     <>
       <ContentSection
-        title='User Management'
-        desc='Create and manage users in the system.'
+        title='Role Management'
+        desc='Create and manage roles with permissions.'
       >
         <div className='space-y-4'>
           <div className='flex items-center justify-between'>
             <p className='text-sm text-muted-foreground'>
-              {users.length} user(s) in the system
+              {roles.length} role(s) in the system
             </p>
             <Button onClick={() => setIsCreateDialogOpen(true)}>
               <Plus className='h-4 w-4' />
-              Create User
+              Create Role
             </Button>
           </div>
 
-          <UserList users={users} isLoading={isLoading} onUpdate={refetch} />
+          <RoleList roles={roles} isLoading={isLoading} onUpdate={refetch} />
         </div>
       </ContentSection>
 
-      <CreateUserDialog
+      <CreateRoleDialog
         open={isCreateDialogOpen}
         onOpenChange={setIsCreateDialogOpen}
         onSuccess={() => refetch()}
