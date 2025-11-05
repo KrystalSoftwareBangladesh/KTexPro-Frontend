@@ -3,7 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
+  // CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
@@ -26,7 +26,7 @@ export function SignIn() {
         <CardContent>
           <UserAuthForm redirectTo={redirect} />
         </CardContent>
-        <CardFooter>
+        {/* <CardFooter>
           <p className='text-muted-foreground px-8 text-center text-sm'>
             By clicking sign in, you agree to our{' '}
             <a
@@ -44,7 +44,7 @@ export function SignIn() {
             </a>
             .
           </p>
-        </CardFooter>
+        </CardFooter> */}
       </Card>
     </AuthLayout>
   )

@@ -96,6 +96,14 @@ export function EditRoleDialog({
     )
   }
 
+  const toggleSelectAll = () => {
+    if (selectedPermissions.length === permissions.length) {
+      setSelectedPermissions([])
+    } else {
+      setSelectedPermissions(permissions.map((p) => p.id))
+    }
+  }
+
   const onSubmit = (data: EditRoleFormData) => {
     setIsSubmitting(true)
     updateMutation.mutate({
@@ -131,7 +139,20 @@ export function EditRoleDialog({
             />
 
             <div className='space-y-2'>
-              <FormLabel>Permissions</FormLabel>
+              <div className='flex items-center justify-between'>
+                <FormLabel>Permissions</FormLabel>
+                <Button
+                  type='button'
+                  variant='ghost'
+                  size='sm'
+                  onClick={toggleSelectAll}
+                  className='h-8 text-xs'
+                >
+                  {selectedPermissions.length === permissions.length
+                    ? 'Deselect All'
+                    : 'Select All'}
+                </Button>
+              </div>
               <ScrollArea className='h-[300px] rounded-md border p-4'>
                 <div className='space-y-3'>
                   {permissions.map((permission) => (

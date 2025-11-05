@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router'
+// import { Link } from '@tanstack/react-router'
 import {
   Card,
   CardContent,
@@ -27,7 +27,7 @@ export function ForgotPassword() {
           <ForgotPasswordForm />
         </CardContent>
         <CardFooter>
-          <p className='text-muted-foreground mx-auto px-8 text-center text-sm text-balance'>
+          {/* <p className='text-muted-foreground mx-auto px-8 text-center text-sm text-balance'>
             Don't have an account?{' '}
             <Link
               to='/sign-up'
@@ -36,7 +36,7 @@ export function ForgotPassword() {
               Sign up
             </Link>
             .
-          </p>
+          </p> */}
         </CardFooter>
       </Card>
     </AuthLayout>
