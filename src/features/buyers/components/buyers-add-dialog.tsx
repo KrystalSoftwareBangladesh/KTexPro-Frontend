@@ -27,7 +27,7 @@ import { Separator } from '@/components/ui/separator'
 import { toast } from 'sonner'
 import { BuyerService } from '@/services/buyer.service'
 import { RoleService } from '@/services/role.service'
-import type { CreateBuyerRequest, UpdateBuyerRequest } from '@/types/buyer'
+import type { CreateBuyerContactPerson, CreateBuyerRequest, UpdateBuyerRequest } from '@/types/buyer'
 import { useBuyers } from './buyers-provider'
 import { ContactPersonFields } from './contact-person-fields'
 
@@ -140,8 +140,8 @@ export function BuyersAddDialog({ open }: BuyersAddDialogProps) {
   })
 
   const addContactPersonsMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: { contact_persons: any[] } }) =>
-      BuyerService.addContactPersons(id, data),
+    mutationFn: ({ id, data }: { id: number; data: { contact_persons: CreateBuyerContactPerson[] } }) =>
+      BuyerService.addContactPersons(id, data.contact_persons),
     onSuccess: (_data, variables) => {
       toast.success('Contact persons added successfully')
       queryClient.invalidateQueries({ queryKey: ['buyers'] })
