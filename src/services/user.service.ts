@@ -12,9 +12,16 @@ import type {
   UpdateProfileResponse,
   ChangePasswordRequest,
   ChangePasswordResponse,
+  VerifyUniqueRequest,
+  VerifyUniqueResponse,
 } from '@/types/auth'
 
 export class UserService {
+  static async verifyUnique(payload: VerifyUniqueRequest): Promise<VerifyUniqueResponse> {
+    const res = await api.post('/user/v1/verify', payload)
+    return res.data
+  }
+
   static async createUser(
     userData: CreateUserRequest
   ): Promise<CreateUserResponse> {
@@ -27,15 +34,15 @@ export class UserService {
 
   static async getUserList(): Promise<User[]> {
     const response = await api.get<User[] | UserListResponse>('/user/v1/list')
-    
+
     if (Array.isArray(response.data)) {
       return response.data
     }
-    
+
     if (response.data && typeof response.data === 'object' && 'results' in response.data) {
       return (response.data as UserListResponse).results || []
     }
-    
+
     return []
   }
 

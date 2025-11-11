@@ -60,6 +60,17 @@ export interface UserProfile {
   groups: number[]
 }
 
+export interface VerifyUniqueRequest {
+  username?: string
+  email?: string
+}
+
+export interface VerifyUniqueResponse {
+  exists: boolean
+  field: 'username' | 'email'
+  value: string
+}
+
 export interface CreateUserRequest {
   first_name: string
   middle_name?: string

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -91,6 +92,51 @@ export function CreateUserDrawer({ open, onOpenChange, onSuccess }: CreateUserDr
     },
   })
 
+  const username = form.watch('username')
+  const email = form.watch('email')
+
+  // Debounced remote check for username
+  useEffect(() => {
+    if (!username) {
+      form.clearErrors('username')
+      return
+    }
+    const t = setTimeout(async () => {
+      try {
+        const { exists } = await UserService.verifyUnique({ username })
+        if (exists) {
+          form.setError('username', { type: 'manual', message: 'Username is already taken' })
+        } else {
+          form.clearErrors('username')
+        }
+      } catch {
+        // optionally surface a toast; keeping silent to avoid noise during typing
+      }
+    }, 400)
+    return () => clearTimeout(t)
+  }, [username])
+
+  // Debounced remote check for email
+  useEffect(() => {
+    if (!email) {
+      form.clearErrors('email')
+      return
+    }
+    const t = setTimeout(async () => {
+      try {
+        const { exists } = await UserService.verifyUnique({ email })
+        if (exists) {
+          form.setError('email', { type: 'manual', message: 'Email is already in use' })
+        } else {
+          form.clearErrors('email')
+        }
+      } catch {
+        // silently ignore transient errors while typing
+      }
+    }, 400)
+    return () => clearTimeout(t)
+  }, [email])
+
   // Reset form when drawer opens/closes
   useEffect(() => {
     if (open) {
@@ -131,6 +177,27 @@ export function CreateUserDrawer({ open, onOpenChange, onSuccess }: CreateUserDr
   const handleNext = async () => {
     const fields = getFieldsForStep(currentStep)
     const valid = await form.trigger(fields as any)
+
+    if (currentStep === 0) {
+      const usernameVal = form.getValues('username')
+      const emailVal = form.getValues('email')
+
+      const [uCheck, eCheck] = await Promise.all([
+        usernameVal ? UserService.verifyUnique({ username: usernameVal }) : Promise.resolve({ exists: false }),
+        emailVal ? UserService.verifyUnique({ email: emailVal }) : Promise.resolve({ exists: false }),
+      ])
+
+      let blocked = false
+      if (uCheck.exists) {
+        form.setError('username', { type: 'manual', message: 'Username is already taken' })
+        blocked = true
+      }
+      if (eCheck.exists) {
+        form.setError('email', { type: 'manual', message: 'Email is already in use' })
+        blocked = true
+      }
+      if (blocked) return
+    }
     if (valid && currentStep < STEPS.length - 1) setCurrentStep((s) => s + 1)
   }
 
@@ -139,6 +206,21 @@ export function CreateUserDrawer({ open, onOpenChange, onSuccess }: CreateUserDr
   async function onSubmit(data: CreateUserFormData) {
     setIsLoading(true)
     try {
+      const [uCheck, eCheck] = await Promise.all([
+        UserService.verifyUnique({ username: data.username }),
+        UserService.verifyUnique({ email: data.email }),
+      ])
+
+      if (uCheck.exists) {
+        form.setError('username', { type: 'manual', message: 'Username is already taken' })
+      }
+      if (eCheck.exists) {
+        form.setError('email', { type: 'manual', message: 'Email is already in use' })
+      }
+      if (uCheck.exists || eCheck.exists) {
+        setIsLoading(false)
+        return
+      }
       await UserService.createUser({
         first_name: data.first_name,
         middle_name: data.middle_name,
