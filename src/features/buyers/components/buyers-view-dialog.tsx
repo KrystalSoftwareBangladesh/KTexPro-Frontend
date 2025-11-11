@@ -1,6 +1,5 @@
 import { format } from 'date-fns'
 import { Building2, Mail, Phone, Globe, User, Calendar } from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
 import {
   Dialog,
   DialogContent,
@@ -25,27 +24,18 @@ export function BuyersViewDialog({ open }: BuyersViewDialogProps) {
       <DialogContent className='sm:max-w-2xl'>
         <DialogHeader>
           <DialogTitle className='text-2xl'>{currentRow.name}</DialogTitle>
-          <DialogDescription>{currentRow.company}</DialogDescription>
+          <DialogDescription>{currentRow.industry}</DialogDescription>
         </DialogHeader>
 
         <div className='space-y-4'>
-          <div className='flex items-center gap-2'>
-            <Badge variant='outline' className='capitalize'>
-              {currentRow.status}
-            </Badge>
-            <Badge variant='secondary' className='capitalize'>
-              {currentRow.category}
-            </Badge>
-          </div>
-
           <Separator />
 
           <div className='grid gap-4'>
             <div className='flex items-center gap-3'>
               <Building2 className='size-4 text-muted-foreground' />
               <div>
-                <p className='text-sm text-muted-foreground'>Company</p>
-                <p className='font-medium'>{currentRow.company}</p>
+                <p className='text-sm text-muted-foreground'>Industry</p>
+                <p className='font-medium'>{currentRow.industry}</p>
               </div>
             </div>
 
@@ -53,7 +43,7 @@ export function BuyersViewDialog({ open }: BuyersViewDialogProps) {
               <Mail className='size-4 text-muted-foreground' />
               <div>
                 <p className='text-sm text-muted-foreground'>Email</p>
-                <p className='font-medium'>{currentRow.contactEmail}</p>
+                <p className='font-medium'>{currentRow.email}</p>
               </div>
             </div>
 
@@ -61,7 +51,7 @@ export function BuyersViewDialog({ open }: BuyersViewDialogProps) {
               <Phone className='size-4 text-muted-foreground' />
               <div>
                 <p className='text-sm text-muted-foreground'>Phone</p>
-                <p className='font-medium'>{currentRow.contactPhone}</p>
+                <p className='font-medium'>{currentRow.phone_number}</p>
               </div>
             </div>
 
@@ -85,28 +75,28 @@ export function BuyersViewDialog({ open }: BuyersViewDialogProps) {
             <div className='flex items-center gap-3'>
               <User className='size-4 text-muted-foreground' />
               <div>
-                <p className='text-sm text-muted-foreground'>Key Account Manager</p>
-                <p className='font-medium'>{currentRow.keyAccountManager}</p>
+                <p className='text-sm text-muted-foreground'>Created By</p>
+                <p className='font-medium'>{currentRow.created_by_name}</p>
               </div>
             </div>
 
             <div className='flex items-center gap-3'>
               <Calendar className='size-4 text-muted-foreground' />
               <div>
-                <p className='text-sm text-muted-foreground'>Relationship Since</p>
+                <p className='text-sm text-muted-foreground'>Created At</p>
                 <p className='font-medium'>
-                  {format(currentRow.relationshipSince, 'MMMM dd, yyyy')}
+                  {format(new Date(currentRow.created_at), 'MMMM dd, yyyy')}
                 </p>
               </div>
             </div>
           </div>
 
-          {currentRow.notes && (
+          {currentRow.billing_address && (
             <>
               <Separator />
               <div>
-                <p className='text-sm text-muted-foreground mb-2'>Notes</p>
-                <p className='text-sm'>{currentRow.notes}</p>
+                <p className='text-sm text-muted-foreground mb-2'>Billing Address</p>
+                <p className='text-sm'>{currentRow.billing_address}</p>
               </div>
             </>
           )}

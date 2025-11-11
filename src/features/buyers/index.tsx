@@ -1,21 +1,27 @@
 import { getRouteApi } from '@tanstack/react-router'
+import { useQuery } from '@tanstack/react-query'
 import { ConfigDrawer } from '@/components/config-drawer'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
 import { ProfileDropdown } from '@/components/profile-dropdown'
 import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
+import { BuyerService } from '@/services/buyer.service'
 import { BuyersDialogs } from './components/buyers-dialogs'
 import { BuyersPrimaryButtons } from './components/buyers-primary-buttons'
 import { BuyersProvider } from './components/buyers-provider'
 import { BuyersTable } from './components/buyers-table'
-import { buyers } from './data/buyers'
 
 const route = getRouteApi('/_authenticated/buyers/')
 
 export function Buyers() {
   const search = route.useSearch()
   const navigate = route.useNavigate()
+
+  const { data: buyers = [], isLoading } = useQuery({
+    queryKey: ['buyers'],
+    queryFn: () => BuyerService.getBuyers(),
+  })
 
   return (
     <BuyersProvider>
@@ -38,7 +44,13 @@ export function Buyers() {
           </div>
           <BuyersPrimaryButtons />
         </div>
-        <BuyersTable data={buyers} search={search} navigate={navigate} />
+        {isLoading ? (
+          <div className='flex items-center justify-center py-10'>
+            <p className='text-muted-foreground'>Loading buyers...</p>
+          </div>
+        ) : (
+          <BuyersTable data={buyers} search={search} navigate={navigate} />
+        )}
       </Main>
 
       <BuyersDialogs />

@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { type Buyer } from '../data/schema'
+import { type Buyer } from '@/types/buyer'
 import { useBuyers } from './buyers-provider'
 
 interface DataTableRowActionsProps {
