@@ -1,11 +1,11 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { Link } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '@/components/data-table'
 import { LongText } from '@/components/long-text'
-import { type Buyer } from '../data/schema'
+import { type Buyer } from '@/types/buyer'
 import { DataTableRowActions } from './data-table-row-actions'
 
 export const buyersColumns: ColumnDef<Buyer>[] = [
@@ -42,9 +42,13 @@ export const buyersColumns: ColumnDef<Buyer>[] = [
       <DataTableColumnHeader column={column} title='Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-36 ps-3 font-medium'>
-        {row.getValue('name')}
-      </LongText>
+      <Link
+        to='/buyers/$id'
+        params={{ id: row.original.id.toString() }}
+        className='max-w-36 ps-3 font-medium text-primary hover:underline'
+      >
+        <LongText>{row.getValue('name')}</LongText>
+      </Link>
     ),
     meta: {
       className: cn(
@@ -55,87 +59,47 @@ export const buyersColumns: ColumnDef<Buyer>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'company',
+    accessorKey: 'industry',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Company' />
+      <DataTableColumnHeader column={column} title='Industry' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-48'>{row.getValue('company')}</LongText>
+      <LongText className='max-w-48'>{row.getValue('industry')}</LongText>
     ),
   },
   {
-    accessorKey: 'country',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Country' />
-    ),
-    cell: ({ row }) => <div className='w-fit'>{row.getValue('country')}</div>,
-  },
-  {
-    accessorKey: 'contactEmail',
+    accessorKey: 'email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Email' />
     ),
     cell: ({ row }) => (
-      <div className='w-fit text-nowrap'>{row.getValue('contactEmail')}</div>
+      <div className='w-fit text-nowrap'>{row.getValue('email')}</div>
     ),
   },
   {
-    accessorKey: 'category',
+    accessorKey: 'phone_number',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Category' />
+      <DataTableColumnHeader column={column} title='Phone' />
     ),
     cell: ({ row }) => (
-      <Badge variant='outline' className='capitalize'>
-        {row.getValue('category')}
-      </Badge>
+      <div className='w-fit text-nowrap'>{row.getValue('phone_number')}</div>
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-    enableSorting: false,
   },
   {
-    accessorKey: 'status',
+    accessorKey: 'created_by_name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Status' />
+      <DataTableColumnHeader column={column} title='Created By' />
+    ),
+    cell: ({ row }) => <div>{row.getValue('created_by_name')}</div>,
+  },
+  {
+    accessorKey: 'created_at',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Created' />
     ),
     cell: ({ row }) => {
-      const status = row.getValue('status') as string
-      const statusColors = {
-        active: 'bg-green-500/10 text-green-500',
-        inactive: 'bg-gray-500/10 text-gray-500',
-        pending: 'bg-yellow-500/10 text-yellow-500',
-        archived: 'bg-red-500/10 text-red-500',
-      }
-      return (
-        <Badge
-          variant='outline'
-          className={cn('capitalize', statusColors[status as keyof typeof statusColors])}
-        >
-          {status}
-        </Badge>
-      )
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id))
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'keyAccountManager',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Account Manager' />
-    ),
-    cell: ({ row }) => <div>{row.getValue('keyAccountManager')}</div>,
-  },
-  {
-    accessorKey: 'relationshipSince',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Since' />
-    ),
-    cell: ({ row }) => {
-      const date = row.getValue('relationshipSince') as Date
-      return <div className='text-nowrap'>{format(date, 'MMM dd, yyyy')}</div>
+      const date = row.getValue('created_at') as string
+      return <div className='text-nowrap'>{format(new Date(date), 'MMM dd, yyyy')}</div>
     },
   },
   {

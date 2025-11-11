@@ -22,8 +22,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination, DataTableToolbar } from '@/components/data-table'
-import { buyerCategories, buyerStatuses } from '../data/data'
-import { type Buyer } from '../data/schema'
+import { type Buyer } from '@/types/buyer'
 import { buyersColumns as columns } from './buyers-columns'
 
 type DataTableProps = {
@@ -50,9 +49,8 @@ export function BuyersTable({ data, search, navigate }: DataTableProps) {
     globalFilter: { enabled: false },
     columnFilters: [
       { columnId: 'name', searchKey: 'name', type: 'string' },
-      { columnId: 'status', searchKey: 'status', type: 'array' },
-      { columnId: 'category', searchKey: 'category', type: 'array' },
-      { columnId: 'country', searchKey: 'country', type: 'string' },
+      { columnId: 'email', searchKey: 'email', type: 'string' },
+      { columnId: 'industry', searchKey: 'industry', type: 'string' },
     ],
   })
 
@@ -90,18 +88,6 @@ export function BuyersTable({ data, search, navigate }: DataTableProps) {
         table={table}
         searchPlaceholder='Filter buyers...'
         searchKey='name'
-        filters={[
-          {
-            columnId: 'status',
-            title: 'Status',
-            options: buyerStatuses.map((status) => ({ ...status })),
-          },
-          {
-            columnId: 'category',
-            title: 'Category',
-            options: buyerCategories.map((category) => ({ ...category })),
-          },
-        ]}
       />
       <div className='@container/table'>
         <div className='rounded-md border'>
