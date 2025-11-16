@@ -84,7 +84,7 @@ export const supplierSchema = z.object({
   address: z.string().min(1, 'Address is required'),
   country: z.string().min(1, 'Country is required'),
   contactPerson: contactPersonSchema,
-  capabilities: z.array(capabilitySchema).min(1, 'Select at least one capability'),
+  capabilities: z.array(z.string()).min(1, 'Select at least one capability'),
   certifications: z.array(certificationSchema),
   yearEstablished: z.number().min(1900).max(new Date().getFullYear()),
   totalWorkers: z.number().min(1, 'Total workers must be at least 1'),
@@ -95,6 +95,7 @@ export const supplierSchema = z.object({
   status: supplierStatusSchema,
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
+  capabilityIds: z.array(z.number()).optional(),
 })
 export type Supplier = z.infer<typeof supplierSchema>
 

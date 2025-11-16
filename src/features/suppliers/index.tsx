@@ -9,14 +9,19 @@ import { SuppliersDialogs } from './components/suppliers-dialogs'
 import { SuppliersPrimaryButtons } from './components/suppliers-primary-buttons'
 import { SuppliersProvider } from './components/suppliers-provider'
 import { SuppliersTable } from './components/suppliers-table'
-import { suppliers } from './data/suppliers'
+import { useSuppliersQuery } from './hooks/use-suppliers-query'
 
 const route = getRouteApi('/_authenticated/suppliers/')
 
 export function Suppliers() {
   const search = route.useSearch()
   const navigate = route.useNavigate()
-
+  
+  const { data, isLoading, error } = useSuppliersQuery({
+    page: 1,
+    page_size: 100,
+  })
+  console.log('data', data)
   return (
     <SuppliersProvider>
       <Header fixed>
@@ -38,7 +43,17 @@ export function Suppliers() {
           </div>
           <SuppliersPrimaryButtons />
         </div>
-        <SuppliersTable data={suppliers} search={search} navigate={navigate} />
+        {isLoading ? (
+          <div className='flex items-center justify-center p-8'>
+            <p className='text-muted-foreground'>Loading suppliers...</p>
+          </div>
+        ) : error ? (
+          <div className='flex items-center justify-center p-8'>
+            <p className='text-destructive'>Failed to load suppliers. Please try again.</p>
+          </div>
+        ) : (
+          <SuppliersTable data={data?.data || []} search={search} navigate={navigate} />
+        )}
       </Main>
 
       <SuppliersDialogs />

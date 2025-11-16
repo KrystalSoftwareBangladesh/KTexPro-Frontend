@@ -10,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { toast } from 'sonner'
+import { useDeleteSupplierMutation } from '../hooks/use-suppliers-query'
 import { useSuppliers } from './suppliers-provider'
 
 type SuppliersDeleteDialogProps = {
@@ -19,17 +19,18 @@ type SuppliersDeleteDialogProps = {
 
 export function SuppliersDeleteDialog({ open }: SuppliersDeleteDialogProps) {
   const { setOpen, currentRow } = useSuppliers()
-  const [isDeleting, setIsDeleting] = useState(false)
   const [confirmText, setConfirmText] = useState('')
+  const deleteMutation = useDeleteSupplierMutation()
 
   const handleDelete = () => {
-    setIsDeleting(true)
-    setTimeout(() => {
-      toast.success('Supplier deleted successfully')
-      setIsDeleting(false)
-      setOpen(null)
-      setConfirmText('')
-    }, 1000)
+    if (!currentRow) return
+    
+    deleteMutation.mutate(parseInt(currentRow.id), {
+      onSuccess: () => {
+        setOpen(null)
+        setConfirmText('')
+      },
+    })
   }
 
   return (
@@ -53,15 +54,19 @@ export function SuppliersDeleteDialog({ open }: SuppliersDeleteDialogProps) {
           />
         </div>
         <AlertDialogFooter>
-          <Button variant='outline' onClick={() => setOpen(null)} disabled={isDeleting}>
+          <Button
+            variant='outline'
+            onClick={() => setOpen(null)}
+            disabled={deleteMutation.isPending}
+          >
             Cancel
           </Button>
           <Button
             variant='destructive'
             onClick={handleDelete}
-            disabled={confirmText !== 'delete' || isDeleting}
+            disabled={confirmText !== 'delete' || deleteMutation.isPending}
           >
-            {isDeleting ? 'Deleting...' : 'Delete Supplier'}
+            {deleteMutation.isPending ? 'Deleting...' : 'Delete Supplier'}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

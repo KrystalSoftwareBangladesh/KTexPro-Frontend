@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ChevronLeft, ChevronRight, Plus, Trash2 } from 'lucide-react'
-import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
@@ -37,7 +36,6 @@ import {
 } from '@/components/ui/form'
 import { Stepper } from '@/components/ui/stepper'
 import {
-  capabilities,
   certificationTypes,
   companyTypes,
   countries,
@@ -48,6 +46,11 @@ import {
   type Supplier,
   type SupplierFormData,
 } from '../data/schema'
+import {
+  useCapabilityTypesQuery,
+  useCreateSupplierMutation,
+  useUpdateSupplierMutation,
+} from '../hooks/use-suppliers-query'
 
 type SupplierMutateDrawerProps = {
   open: boolean
@@ -70,6 +73,15 @@ export function SuppliersMutateDrawer({
 }: SupplierMutateDrawerProps) {
   const isUpdate = !!currentRow
   const [currentStep, setCurrentStep] = useState(0)
+  const [selectedCapabilityIds, setSelectedCapabilityIds] = useState<number[]>([])
+
+  const {
+    data: capabilityTypes,
+    isLoading: isLoadingCapabilities,
+    error: capabilityError,
+  } = useCapabilityTypesQuery()
+  const createMutation = useCreateSupplierMutation()
+  const updateMutation = useUpdateSupplierMutation()
 
   const form = useForm<SupplierFormData>({
     resolver: zodResolver(supplierFormSchema as any),
@@ -161,16 +173,42 @@ export function SuppliersMutateDrawer({
           }
       form.reset(formData)
       setCurrentStep(0)
+      
+      if (currentRow?.capabilityIds) {
+        setSelectedCapabilityIds(currentRow.capabilityIds)
+      } else {
+        setSelectedCapabilityIds([])
+      }
     }
   }, [open, currentRow, form])
 
-  const onSubmit = async (_data: SupplierFormData) => {
-    toast.success(
-      isUpdate
-        ? 'Supplier updated successfully'
-        : 'Supplier created successfully'
-    )
-    onOpenChange(false)
+  const onSubmit = async (data: SupplierFormData) => {
+    if (isUpdate && currentRow) {
+      updateMutation.mutate(
+        {
+          id: parseInt(currentRow.id),
+          data,
+          capabilityIds: selectedCapabilityIds.length > 0 ? selectedCapabilityIds : undefined,
+        },
+        {
+          onSuccess: () => {
+            onOpenChange(false)
+          },
+        }
+      )
+    } else {
+      createMutation.mutate(
+        {
+          data,
+          capabilityIds: selectedCapabilityIds,
+        },
+        {
+          onSuccess: () => {
+            onOpenChange(false)
+          },
+        }
+      )
+    }
   }
 
   const addCertification = () => {
@@ -492,55 +530,73 @@ export function SuppliersMutateDrawer({
                 </div>
                 <Separator />
 
-                <FormField
-                  control={form.control}
-                  name='capabilities'
-                  render={() => (
-                    <FormItem>
-                      <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-                        {capabilities.map((capability) => (
-                          <FormField
-                            key={capability.value}
-                            control={form.control}
-                            name='capabilities'
-                            render={({ field }) => {
-                              return (
-                                <FormItem
-                                  key={capability.value}
-                                  className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3'
-                                >
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(capability.value)}
-                                      onCheckedChange={(checked) => {
-                                        return checked
-                                          ? field.onChange([...field.value, capability.value])
-                                          : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== capability.value
-                                              )
-                                            )
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <div className='flex-1 space-y-1 leading-none'>
-                                    <FormLabel className='cursor-pointer font-normal'>
-                                      {capability.label}
-                                    </FormLabel>
-                                    <FormDescription className='text-xs'>
-                                      {capability.description}
-                                    </FormDescription>
-                                  </div>
-                                </FormItem>
-                              )
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {isLoadingCapabilities ? (
+                  <div className='flex items-center justify-center p-8'>
+                    <p className='text-sm text-muted-foreground'>Loading capabilities...</p>
+                  </div>
+                ) : capabilityError ? (
+                  <div className='flex items-center justify-center p-8'>
+                    <p className='text-sm text-destructive'>
+                      Failed to load capabilities. Please try again or contact support.
+                    </p>
+                  </div>
+                ) : !capabilityTypes || capabilityTypes.length === 0 ? (
+                  <div className='flex items-center justify-center p-8'>
+                    <p className='text-sm text-destructive'>
+                      No capabilities available. Please contact support.
+                    </p>
+                  </div>
+                ) : (
+                  <FormField
+                    control={form.control}
+                    name='capabilities'
+                    render={() => (
+                      <FormItem>
+                        <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
+                          {capabilityTypes.map((capability) => (
+                            <FormField
+                              key={capability.id}
+                              control={form.control}
+                              name='capabilities'
+                              render={({ field }) => {
+                                const isChecked = selectedCapabilityIds.includes(capability.id)
+                                return (
+                                  <FormItem
+                                    key={capability.id}
+                                    className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3'
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={isChecked}
+                                        onCheckedChange={(checked) => {
+                                          const newIds = checked
+                                            ? [...selectedCapabilityIds, capability.id]
+                                            : selectedCapabilityIds.filter((id) => id !== capability.id)
+                                          setSelectedCapabilityIds(newIds)
+                                          
+                                          const names = newIds.map(
+                                            (id) => capabilityTypes.find((c) => c.id === id)?.name || ''
+                                          )
+                                          field.onChange(names)
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <div className='flex-1 space-y-1 leading-none'>
+                                      <FormLabel className='cursor-pointer font-normal'>
+                                        {capability.name}
+                                      </FormLabel>
+                                    </div>
+                                  </FormItem>
+                                )
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
               </div>
             )}
 

@@ -10,6 +10,7 @@ import {
   GalleryVerticalEnd,
   // HelpCircle,
   LayoutDashboard,
+  List,
   ListTodo,
   // Lock,
   // MessagesSquare,
@@ -91,8 +92,19 @@ export const getSidebarData = (): SidebarData => {
         },
         {
           title: 'Suppliers',
-          url: '/suppliers',
           icon: Factory,
+          items: [
+            {
+              title: 'Supplier List',
+              url: '/suppliers',
+              icon: List,
+            },
+            {
+              title: 'Capability List',
+              url: '/suppliers/capabilities',
+              icon: List,
+            },
+          ],
         },
         // {
         //   title: 'Secured by Clerk',
