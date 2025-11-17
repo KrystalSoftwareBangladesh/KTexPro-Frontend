@@ -63,12 +63,20 @@ interface SupplierApi {
   updated_at?: string
 }
 
-interface SupplierListResponseApi {
-  count: number
-  next: string | null
-  previous: string | null
-  results: SupplierApi[]
-}
+// interface SupplierListResponseApi {
+//   count: number
+//   next: string | null
+//   previous: string | null
+//   results: SupplierApi[]
+// }
+
+// interface SupplierListResponseApi {
+//   length: number
+//   next: string | null
+//   previous: string | null
+//   data: SupplierApi[]
+// }
+
 
 export interface CapabilityType {
   id: number
@@ -212,12 +220,12 @@ export class SupplierService {
     country?: string
   }): Promise<{ data: Supplier[]; total: number }> {
     const [response, capabilityTypes] = await Promise.all([
-      api.get<SupplierListResponseApi>('/supplier/v1/suppliers', { params }),
+      api.get<any>('/supplier/v1/suppliers', { params }),
       this.getCapabilityTypes(),
     ])
     return {
-      data: response.data.map((supplier) => toSupplier(supplier, capabilityTypes)),
-      total: response.data.length,
+      data: response.data.map((supplier: SupplierApi) => toSupplier(supplier, capabilityTypes)),
+      total: 100,
     }
   }
 
