@@ -71,9 +71,9 @@ interface SupplierApi {
 // }
 
 interface SupplierListResponseApi {
-  length: number
-  next: string | null
-  previous: string | null
+  // length: number
+  // next: string | null
+  // previous: string | null
   data: SupplierApi[]
 }
 
@@ -225,7 +225,7 @@ export class SupplierService {
     ])
     return {
       data: response.data.map((supplier: SupplierApi) => toSupplier(supplier, capabilityTypes)),
-      total: response.length,
+      total: 100,
     }
   }
 
