@@ -1,5 +1,6 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
+import { Link } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -42,9 +43,13 @@ export const suppliersColumns: ColumnDef<Supplier>[] = [
       <DataTableColumnHeader column={column} title='Supplier Name' />
     ),
     cell: ({ row }) => (
-      <LongText className='max-w-40 ps-3 font-medium'>
-        {row.getValue('supplierName')}
-      </LongText>
+      <Link
+        to='/suppliers/$id'
+        params={{ id: row.original.id.toString() }}
+        className='max-w-40 ps-3 font-medium text-primary hover:underline'
+      >
+        <LongText>{row.getValue('supplierName')}</LongText>
+      </Link>
     ),
     meta: {
       className: cn(

@@ -17,6 +17,7 @@ import {
   Monitor,
   // Package,
   Palette,
+  Shirt,
   // ServerOff,
   Settings,
   ShoppingBag,
@@ -105,6 +106,11 @@ export const getSidebarData = (): SidebarData => {
               icon: List,
             },
           ],
+        },
+        {
+          title: 'Styles',
+          url: '/styles',
+          icon: Shirt,
         },
         // {
         //   title: 'Secured by Clerk',
