@@ -70,12 +70,12 @@ interface SupplierApi {
 //   results: SupplierApi[]
 // }
 
-interface SupplierListResponseApi {
-  // length: number
-  // next: string | null
-  // previous: string | null
-  data: SupplierApi[]
-}
+// interface SupplierListResponseApi {
+//   length: number
+//   next: string | null
+//   previous: string | null
+//   data: SupplierApi[]
+// }
 
 
 export interface CapabilityType {
@@ -220,7 +220,7 @@ export class SupplierService {
     country?: string
   }): Promise<{ data: Supplier[]; total: number }> {
     const [response, capabilityTypes] = await Promise.all([
-      api.get<SupplierListResponseApi>('/supplier/v1/suppliers', { params }),
+      api.get<any>('/supplier/v1/suppliers', { params }),
       this.getCapabilityTypes(),
     ])
     return {
