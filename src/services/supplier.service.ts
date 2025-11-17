@@ -63,12 +63,20 @@ interface SupplierApi {
   updated_at?: string
 }
 
+// interface SupplierListResponseApi {
+//   count: number
+//   next: string | null
+//   previous: string | null
+//   results: SupplierApi[]
+// }
+
 interface SupplierListResponseApi {
   count: number
   next: string | null
   previous: string | null
-  results: SupplierApi[]
+  data: SupplierApi[]
 }
+
 
 export interface CapabilityType {
   id: number
