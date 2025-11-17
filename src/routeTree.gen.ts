@@ -29,6 +29,7 @@ import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authen
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './routes/_authenticated/suppliers/index'
+import { Route as AuthenticatedStylesIndexRouteImport } from './routes/_authenticated/styles/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
 import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
 import { Route as AuthenticatedDetailsIndexRouteImport } from './routes/_authenticated/details/index'
@@ -39,6 +40,8 @@ import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/c
 import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
 import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
 import { Route as AuthenticatedSuppliersCapabilitiesRouteImport } from './routes/_authenticated/suppliers.capabilities'
+import { Route as AuthenticatedSuppliersIdRouteImport } from './routes/_authenticated/suppliers/$id'
+import { Route as AuthenticatedStylesIdRouteImport } from './routes/_authenticated/styles/$id'
 import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSettingsRolesRouteImport } from './routes/_authenticated/settings/roles'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
@@ -147,6 +150,12 @@ const AuthenticatedSuppliersIndexRoute =
     path: '/suppliers/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedStylesIndexRoute =
+  AuthenticatedStylesIndexRouteImport.update({
+    id: '/styles/',
+    path: '/styles/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
@@ -203,6 +212,17 @@ const AuthenticatedSuppliersCapabilitiesRoute =
     path: '/suppliers/capabilities',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedSuppliersIdRoute =
+  AuthenticatedSuppliersIdRouteImport.update({
+    id: '/suppliers/$id',
+    path: '/suppliers/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedStylesIdRoute = AuthenticatedStylesIdRouteImport.update({
+  id: '/styles/$id',
+  path: '/styles/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedSettingsUsersRoute =
   AuthenticatedSettingsUsersRouteImport.update({
     id: '/users',
@@ -274,6 +294,8 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/styles/$id': typeof AuthenticatedStylesIdRoute
+  '/suppliers/$id': typeof AuthenticatedSuppliersIdRoute
   '/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
@@ -284,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/details': typeof AuthenticatedDetailsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/styles': typeof AuthenticatedStylesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -310,6 +333,8 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/styles/$id': typeof AuthenticatedStylesIdRoute
+  '/suppliers/$id': typeof AuthenticatedSuppliersIdRoute
   '/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
@@ -320,6 +345,7 @@ export interface FileRoutesByTo {
   '/details': typeof AuthenticatedDetailsIndexRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
+  '/styles': typeof AuthenticatedStylesIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
   '/tasks': typeof AuthenticatedTasksIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
@@ -351,6 +377,8 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/_authenticated/styles/$id': typeof AuthenticatedStylesIdRoute
+  '/_authenticated/suppliers/$id': typeof AuthenticatedSuppliersIdRoute
   '/_authenticated/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
   '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
@@ -361,6 +389,7 @@ export interface FileRoutesById {
   '/_authenticated/details/': typeof AuthenticatedDetailsIndexRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
+  '/_authenticated/styles/': typeof AuthenticatedStylesIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
@@ -390,6 +419,8 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/roles'
     | '/settings/users'
+    | '/styles/$id'
+    | '/suppliers/$id'
     | '/suppliers/capabilities'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
@@ -400,6 +431,7 @@ export interface FileRouteTypes {
     | '/details'
     | '/help-center'
     | '/settings/'
+    | '/styles'
     | '/suppliers'
     | '/tasks'
     | '/users'
@@ -426,6 +458,8 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/roles'
     | '/settings/users'
+    | '/styles/$id'
+    | '/suppliers/$id'
     | '/suppliers/capabilities'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
@@ -436,6 +470,7 @@ export interface FileRouteTypes {
     | '/details'
     | '/help-center'
     | '/settings'
+    | '/styles'
     | '/suppliers'
     | '/tasks'
     | '/users'
@@ -466,6 +501,8 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/settings/roles'
     | '/_authenticated/settings/users'
+    | '/_authenticated/styles/$id'
+    | '/_authenticated/suppliers/$id'
     | '/_authenticated/suppliers/capabilities'
     | '/clerk/(auth)/sign-in'
     | '/clerk/(auth)/sign-up'
@@ -476,6 +513,7 @@ export interface FileRouteTypes {
     | '/_authenticated/details/'
     | '/_authenticated/help-center/'
     | '/_authenticated/settings/'
+    | '/_authenticated/styles/'
     | '/_authenticated/suppliers/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
@@ -639,6 +677,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSuppliersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/styles/': {
+      id: '/_authenticated/styles/'
+      path: '/styles'
+      fullPath: '/styles'
+      preLoaderRoute: typeof AuthenticatedStylesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/': {
       id: '/_authenticated/settings/'
       path: '/'
@@ -707,6 +752,20 @@ declare module '@tanstack/react-router' {
       path: '/suppliers/capabilities'
       fullPath: '/suppliers/capabilities'
       preLoaderRoute: typeof AuthenticatedSuppliersCapabilitiesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/suppliers/$id': {
+      id: '/_authenticated/suppliers/$id'
+      path: '/suppliers/$id'
+      fullPath: '/suppliers/$id'
+      preLoaderRoute: typeof AuthenticatedSuppliersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/styles/$id': {
+      id: '/_authenticated/styles/$id'
+      path: '/styles/$id'
+      fullPath: '/styles/$id'
+      preLoaderRoute: typeof AuthenticatedStylesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/users': {
@@ -800,12 +859,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBuyersIdRoute: typeof AuthenticatedBuyersIdRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedStylesIdRoute: typeof AuthenticatedStylesIdRoute
+  AuthenticatedSuppliersIdRoute: typeof AuthenticatedSuppliersIdRoute
   AuthenticatedSuppliersCapabilitiesRoute: typeof AuthenticatedSuppliersCapabilitiesRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedBuyersIndexRoute: typeof AuthenticatedBuyersIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
   AuthenticatedDetailsIndexRoute: typeof AuthenticatedDetailsIndexRoute
   AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
+  AuthenticatedStylesIndexRoute: typeof AuthenticatedStylesIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
   AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
@@ -816,6 +878,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedBuyersIdRoute: AuthenticatedBuyersIdRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedStylesIdRoute: AuthenticatedStylesIdRoute,
+  AuthenticatedSuppliersIdRoute: AuthenticatedSuppliersIdRoute,
   AuthenticatedSuppliersCapabilitiesRoute:
     AuthenticatedSuppliersCapabilitiesRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
@@ -823,6 +887,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
   AuthenticatedDetailsIndexRoute: AuthenticatedDetailsIndexRoute,
   AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
+  AuthenticatedStylesIndexRoute: AuthenticatedStylesIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
   AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,

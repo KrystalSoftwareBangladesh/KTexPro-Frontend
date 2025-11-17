@@ -216,8 +216,8 @@ export class SupplierService {
       this.getCapabilityTypes(),
     ])
     return {
-      data: response.data.map((supplier) => toSupplier(supplier, capabilityTypes)),
-      total: response.data.length,
+      data: response.data.map((supplier: SupplierApi) => toSupplier(supplier, capabilityTypes)),
+      total: response.length,
     }
   }
 

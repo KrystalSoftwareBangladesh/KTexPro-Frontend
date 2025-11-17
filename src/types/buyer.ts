@@ -59,3 +59,20 @@ export interface UpdateBuyerRequest {
 export interface AddContactPersonsRequest {
   contact_persons: CreateBuyerContactPerson[]
 }
+
+export interface BuyerInquiry {
+  id: number
+  style_id: string
+  product_type: string
+  quantity: number
+  status: string
+  created_at: string
+}
+
+export interface CommunicationEvent {
+  id: number
+  date: string
+  description: string
+  type: 'email' | 'call' | 'meeting' | 'note'
+  status?: string
+}

@@ -19,14 +19,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'https://apiktexpro-dev.rkshaon.info',
-  //       changeOrigin: true,
-  //       rewrite: (path) => path.replace(/^\/api/, ''),
-  //       secure: false,
-  //     },
-  //   },
-  // },
+  server: {
+    host: '0.0.0.0',
+    port: 5000,
+    strictPort: true,
+    allowedHosts: true,
+  },
 })
