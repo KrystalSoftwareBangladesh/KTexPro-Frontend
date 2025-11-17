@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ClerkRouteRouteImport } from './routes/clerk/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AdminSeedSuppliersRouteImport } from './routes/admin/seed-suppliers'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
 import { Route as errors500RouteImport } from './routes/(errors)/500'
 import { Route as errors404RouteImport } from './routes/(errors)/404'
@@ -37,6 +38,7 @@ import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authentica
 import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/clerk/_authenticated/user-management'
 import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
 import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
+import { Route as AuthenticatedSuppliersCapabilitiesRouteImport } from './routes/_authenticated/suppliers.capabilities'
 import { Route as AuthenticatedSettingsUsersRouteImport } from './routes/_authenticated/settings/users'
 import { Route as AuthenticatedSettingsRolesRouteImport } from './routes/_authenticated/settings/roles'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
@@ -59,6 +61,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AdminSeedSuppliersRoute = AdminSeedSuppliersRouteImport.update({
+  id: '/admin/seed-suppliers',
+  path: '/admin/seed-suppliers',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const errors503Route = errors503RouteImport.update({
   id: '/(errors)/503',
@@ -190,6 +197,12 @@ const ClerkauthSignInRoute = ClerkauthSignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => ClerkauthRouteRoute,
 } as any)
+const AuthenticatedSuppliersCapabilitiesRoute =
+  AuthenticatedSuppliersCapabilitiesRouteImport.update({
+    id: '/suppliers/capabilities',
+    path: '/suppliers/capabilities',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsUsersRoute =
   AuthenticatedSettingsUsersRouteImport.update({
     id: '/users',
@@ -251,6 +264,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/admin/seed-suppliers': typeof AdminSeedSuppliersRoute
   '/': typeof AuthenticatedIndexRoute
   '/buyers/$id': typeof AuthenticatedBuyersIdRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -260,6 +274,7 @@ export interface FileRoutesByFullPath {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
@@ -285,6 +300,7 @@ export interface FileRoutesByTo {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/admin/seed-suppliers': typeof AdminSeedSuppliersRoute
   '/': typeof AuthenticatedIndexRoute
   '/buyers/$id': typeof AuthenticatedBuyersIdRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -294,6 +310,7 @@ export interface FileRoutesByTo {
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/sign-in': typeof ClerkauthSignInRoute
   '/clerk/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
@@ -324,6 +341,7 @@ export interface FileRoutesById {
   '/(errors)/404': typeof errors404Route
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
+  '/admin/seed-suppliers': typeof AdminSeedSuppliersRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/buyers/$id': typeof AuthenticatedBuyersIdRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
@@ -333,6 +351,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/settings/roles': typeof AuthenticatedSettingsRolesRoute
   '/_authenticated/settings/users': typeof AuthenticatedSettingsUsersRoute
+  '/_authenticated/suppliers/capabilities': typeof AuthenticatedSuppliersCapabilitiesRoute
   '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
   '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
   '/clerk/_authenticated/user-management': typeof ClerkAuthenticatedUserManagementRoute
@@ -361,6 +380,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/admin/seed-suppliers'
     | '/'
     | '/buyers/$id'
     | '/errors/$error'
@@ -370,6 +390,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/roles'
     | '/settings/users'
+    | '/suppliers/capabilities'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
@@ -395,6 +416,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/admin/seed-suppliers'
     | '/'
     | '/buyers/$id'
     | '/errors/$error'
@@ -404,6 +426,7 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/settings/roles'
     | '/settings/users'
+    | '/suppliers/capabilities'
     | '/clerk/sign-in'
     | '/clerk/sign-up'
     | '/clerk/user-management'
@@ -433,6 +456,7 @@ export interface FileRouteTypes {
     | '/(errors)/404'
     | '/(errors)/500'
     | '/(errors)/503'
+    | '/admin/seed-suppliers'
     | '/_authenticated/'
     | '/_authenticated/buyers/$id'
     | '/_authenticated/errors/$error'
@@ -442,6 +466,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/notifications'
     | '/_authenticated/settings/roles'
     | '/_authenticated/settings/users'
+    | '/_authenticated/suppliers/capabilities'
     | '/clerk/(auth)/sign-in'
     | '/clerk/(auth)/sign-up'
     | '/clerk/_authenticated/user-management'
@@ -469,6 +494,7 @@ export interface RootRouteChildren {
   errors404Route: typeof errors404Route
   errors500Route: typeof errors500Route
   errors503Route: typeof errors503Route
+  AdminSeedSuppliersRoute: typeof AdminSeedSuppliersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -493,6 +519,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin/seed-suppliers': {
+      id: '/admin/seed-suppliers'
+      path: '/admin/seed-suppliers'
+      fullPath: '/admin/seed-suppliers'
+      preLoaderRoute: typeof AdminSeedSuppliersRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/(errors)/503': {
       id: '/(errors)/503'
@@ -669,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClerkauthSignInRouteImport
       parentRoute: typeof ClerkauthRouteRoute
     }
+    '/_authenticated/suppliers/capabilities': {
+      id: '/_authenticated/suppliers/capabilities'
+      path: '/suppliers/capabilities'
+      fullPath: '/suppliers/capabilities'
+      preLoaderRoute: typeof AuthenticatedSuppliersCapabilitiesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/settings/users': {
       id: '/_authenticated/settings/users'
       path: '/users'
@@ -760,6 +800,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedBuyersIdRoute: typeof AuthenticatedBuyersIdRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
+  AuthenticatedSuppliersCapabilitiesRoute: typeof AuthenticatedSuppliersCapabilitiesRoute
   AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
   AuthenticatedBuyersIndexRoute: typeof AuthenticatedBuyersIndexRoute
   AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
@@ -775,6 +816,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedBuyersIdRoute: AuthenticatedBuyersIdRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
+  AuthenticatedSuppliersCapabilitiesRoute:
+    AuthenticatedSuppliersCapabilitiesRoute,
   AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
   AuthenticatedBuyersIndexRoute: AuthenticatedBuyersIndexRoute,
   AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
@@ -844,6 +887,7 @@ const rootRouteChildren: RootRouteChildren = {
   errors404Route: errors404Route,
   errors500Route: errors500Route,
   errors503Route: errors503Route,
+  AdminSeedSuppliersRoute: AdminSeedSuppliersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

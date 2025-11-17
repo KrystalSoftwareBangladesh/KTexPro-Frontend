@@ -6,7 +6,7 @@ import { Search } from '@/components/search'
 import { ThemeSwitch } from '@/components/theme-switch'
 import { Separator } from '@/components/ui/separator'
 import { Outlet } from '@tanstack/react-router'
-import { Bell, Monitor, Palette, UserCog, Users, Wrench } from 'lucide-react'
+import { Bell, Database, Monitor, Palette, UserCog, Users, Wrench } from 'lucide-react'
 import { SidebarNav } from './components/sidebar-nav'
 
 const sidebarNavItems = [
@@ -40,10 +40,15 @@ const sidebarNavItems = [
     href: '/settings/users',
     icon: <Users size={18} />,
   },
-    {
+  {
     title: 'Roles',
     href: '/settings/roles',
     icon: <UserCog size={18} />,
+  },
+  {
+    title: 'Seed Data',
+    href: '/admin/seed-suppliers',
+    icon: <Database size={18} />,
   },
 ]
 
