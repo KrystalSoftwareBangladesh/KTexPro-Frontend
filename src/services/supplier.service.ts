@@ -71,7 +71,7 @@ interface SupplierApi {
 // }
 
 interface SupplierListResponseApi {
-  count: number
+  length: number
   next: string | null
   previous: string | null
   data: SupplierApi[]
